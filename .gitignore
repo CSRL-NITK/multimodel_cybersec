@@ -79,6 +79,20 @@ graphify-out/cache/
 *.docx
 *.pdf
 
+# Presentations & Slide Generation
+*.pptx
+*.ppt
+Cybersecurity_Compliance_Platform_Presentation.pptx
+scripts/generate_presentation.py
+scripts/*presentation*.py
+assets/layer*.png
+assets/macro_architecture.png
+assets/extracted_*
+assets/nitk_logo.png
+
+# Scratch & Temporary
+scratch/
+
 # Sessions
 saved_sessions/
 
