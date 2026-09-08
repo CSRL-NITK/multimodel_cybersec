@@ -101,71 +101,34 @@ def get_llm():
     return _model, _tokenizer, device
 
 
-_llm_pipeline = None
-
-def get_langchain_llm(max_new_tokens: int = 300):
-    """Wraps the local causal LM in a LangChain HuggingFacePipeline, cached to prevent CUDA OOM."""
-    global _llm_pipeline
-    try:
-        from langchain_huggingface import HuggingFacePipeline
-    except ImportError:
-        from langchain_community.llms import HuggingFacePipeline
-    from transformers import pipeline
-    
-    if _llm_pipeline is None:
-        model, tokenizer, device = get_llm()
-        # Suppress BPE clean_up_tokenization_spaces warning
-        if hasattr(tokenizer, "clean_up_tokenization_spaces"):
-            tokenizer.clean_up_tokenization_spaces = False
-
-        _llm_pipeline = pipeline(
-            "text-generation",
-            model=model,
-            tokenizer=tokenizer,
-            max_new_tokens=max_new_tokens,
-            pad_token_id=tokenizer.eos_token_id,
-            do_sample=False,
-        )
-    else:
-        _llm_pipeline.key = max_new_tokens
-    return HuggingFacePipeline(pipeline=_llm_pipeline)
-
-
 def generate(prompt: str, max_new_tokens: int = 300) -> str:
-    """Generation helper using LangChain's HuggingFacePipeline wrapper with CUDA memory management."""
-    dynamic_defs = []
+    """Fast, native Transformers generation with Qwen chat templating and device memory safety."""
+    model, tokenizer, device = get_llm()
+    messages = [
+        {"role": "system", "content": "You are an expert cybersecurity and regulatory compliance auditor."},
+        {"role": "user", "content": prompt}
+    ]
     try:
-        import compliance_jurisdictions as _cj
-        for reg in _cj.get_registered_standards():
-            sc = reg.get("short_code", reg["key"])
-            title = reg.get("title", "")
-            jur = reg.get("jurisdiction", "")
-            dynamic_defs.append(f"- {sc} [Jurisdiction: {jur}]: {title}")
+        text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     except Exception:
-        pass
-    defs_block = "\n".join(dynamic_defs) if dynamic_defs else ""
-    full_prompt = f"System Instruction: You are an expert regulatory compliance AI assistant.\nActive Framework Registry:\n{defs_block}\n\n" + prompt
+        text = prompt
+
+    inputs = tokenizer([text], return_tensors="pt").to(device)
+    
     try:
-        if torch.cuda.is_available():
-            import gc
-            gc.collect()
-            torch.cuda.empty_cache()
-        llm = get_langchain_llm(max_new_tokens=max_new_tokens)
-        res = llm.invoke(full_prompt).strip()
-        # Clean prompt echo leak if causal LM returns the input system prompt
-        if res.startswith(full_prompt):
-            res = res[len(full_prompt):].strip()
-        elif "System Instruction:" in res and prompt in res:
-            res = res.split(prompt, 1)[-1].strip()
-        if torch.cuda.is_available():
-            import gc
-            gc.collect()
-            torch.cuda.empty_cache()
-        return res
+        with torch.no_grad():
+            outputs = model.generate(
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                do_sample=False,
+                pad_token_id=tokenizer.eos_token_id
+            )
+        
+        generated_ids = [
+            output_ids[len(input_ids):] for input_ids, output_ids in zip(inputs.input_ids, outputs)
+        ]
+        response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        return response.strip()
     except Exception as exc:
-        if torch.cuda.is_available():
-            import gc
-            gc.collect()
-            torch.cuda.empty_cache()
-        # Clean explanation without leaking raw PyTorch CUDA memory tracebacks
+        print(f"Generation error: {exc}")
         return "Status: Not Compliant\nExplanation: Control safeguard evaluated against organizational compliance evidence standards.\nRemediation: Provide evidence documentation detailing organizational implementation."
