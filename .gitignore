@@ -24,7 +24,9 @@ env/
 # Data Stores (regenerated at runtime)
 chroma_db/
 chroma_db_controls/
+chroma_db_frameworks/
 agents/chroma_db_controls/
+agents/chroma_db_frameworks/
 
 # Client Vault (sensitive tenant data)
 client_vault/
