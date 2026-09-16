@@ -10,6 +10,7 @@ Supports:
 
 import os
 import sys
+import re
 import json
 from datetime import datetime, timezone
 from typing import Dict, List, Any, Optional
@@ -146,8 +147,8 @@ def export_hitl_session(
         raise FileNotFoundError(f"Review session '{session_id}' not found.")
 
     md_content = format_hitl_session_to_markdown(session, certified_mode=certified_mode)
-    framework = session.get("framework", "csf").lower()
-    client_id = session.get("client_id", "client")
+    framework = re.sub(r'[^a-zA-Z0-9_-]', '_', session.get("framework", "csf").lower()).strip('_')
+    client_id = re.sub(r'[^a-zA-Z0-9_-]', '_', session.get("client_id", "client")).strip('_')
     
     os.makedirs(output_dir, exist_ok=True)
     mode_prefix = "Certified_Verified" if certified_mode else "Raw_AI_Draft"

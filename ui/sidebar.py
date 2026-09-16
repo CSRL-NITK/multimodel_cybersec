@@ -41,15 +41,29 @@ def render_sidebar_recents(neo4j_active: bool, neo4j_utils, on_db_engine_change_
             if st.button(v_btn_txt, width="stretch", key="sb_view_switch_btn"):
                 st.session_state.active_view = "audit" if curr_v == "chats_dashboard" else "chats_dashboard"
                 st.rerun()
-    else:
-        # Guest Mode Single Prominent Action Button
-        if st.button("**+ Start New Audit Chat**", width="stretch", type="primary", key="sb_guest_new_chat_btn"):
-            auto_save_current_session()
-            new_id = f"Audit_Run_{datetime.now().strftime('%b%d_%H%M%S')}"
-            st.session_state.current_session_id = new_id
-            st.session_state.messages = []
-            st.session_state.active_view = "audit"
+        
+        curr_v = st.session_state.get("active_view", "audit")
+        cockpit_btn_txt = "💬 **Return to Audit Chat**" if curr_v == "hitl_cockpit" else "🛡️ **Auditor Control Cockpit**"
+        if st.button(cockpit_btn_txt, width="stretch", type="secondary" if curr_v == "hitl_cockpit" else "primary", key="sb_hitl_cockpit_btn"):
+            st.session_state.active_view = "audit" if curr_v == "hitl_cockpit" else "hitl_cockpit"
             st.rerun()
+    else:
+        # Guest Mode Prominent Action Buttons
+        col_g1, col_g2 = st.columns([1, 1])
+        with col_g1:
+            if st.button("**+ New Audit**", width="stretch", type="primary", key="sb_guest_new_chat_btn"):
+                auto_save_current_session()
+                new_id = f"Audit_Run_{datetime.now().strftime('%b%d_%H%M%S')}"
+                st.session_state.current_session_id = new_id
+                st.session_state.messages = []
+                st.session_state.active_view = "audit"
+                st.rerun()
+        with col_g2:
+            curr_v = st.session_state.get("active_view", "audit")
+            cockpit_btn_txt = "💬 **Chat**" if curr_v == "hitl_cockpit" else "🛡️ **Cockpit**"
+            if st.button(cockpit_btn_txt, width="stretch", key="sb_guest_hitl_btn"):
+                st.session_state.active_view = "audit" if curr_v == "hitl_cockpit" else "hitl_cockpit"
+                st.rerun()
 
     # Guest users get compact glass notification card
     if user_role == "guest":

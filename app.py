@@ -1194,6 +1194,15 @@ if st.session_state.get("active_view", "audit") == "chats_dashboard":
     st.stop()
 
 # -------------------------------------------------------------------------
+# Full-Screen Human Auditor Control Review Cockpit View
+# -------------------------------------------------------------------------
+if st.session_state.get("active_view", "audit") == "hitl_cockpit":
+    import ui.hitl_verification_panel as ui_hitl
+    importlib.reload(ui_hitl)
+    ui_hitl.render_hitl_audit_reports_view()
+    st.stop()
+
+# -------------------------------------------------------------------------
 # Sidebar
 # -------------------------------------------------------------------------
 with st.sidebar:
@@ -1444,33 +1453,45 @@ with st.sidebar:
             gov_tab1, gov_tab2, gov_tab3 = st.tabs(["Human Review Gate", "Hallucination Benchmark", "Standards Licensing"])
 
             with gov_tab1:
-                st.markdown("#### Human Compliance Expert Sign-Off")
-                st.caption("Pending reports requiring expert auditor sign-off before official client delivery.")
-                pending_files = glob.glob(os.path.join(rg.HUMAN_SIGN_OFF_DIR, "*.json"))
-                if not pending_files:
-                    st.info("No reports currently pending human review.")
-                else:
-                    p_options = [os.path.basename(f).replace(".json", "") for f in pending_files]
-                    sel_report_id = st.selectbox("Select Report to Audit", options=p_options)
-                    if sel_report_id:
-                        with open(os.path.join(rg.HUMAN_SIGN_OFF_DIR, f"{sel_report_id}.json"), "r", encoding="utf-8") as f:
-                            rec = json.load(f)
-                        st.write(f"**Client:** `{rec['client_id']}` | **Status:** `{rec['human_review_status']}`")
-                        st.write(f"**Auto Verdict:** `{rec['auto_verdict']}` | **Submitted At:** `{rec['submitted_at']}`")
-                        auditor_name = st.text_input("Auditor Name / License ID", value="Certifying Auditor CISA-9821")
-                        audit_notes = st.text_area("Auditor Review Notes", value="Verified control evidence against evidence vault.")
-                        
-                        col_sign1, col_sign2 = st.columns(2)
-                        with col_sign1:
-                            if st.button("✅ Approve & Certify Report", width="stretch"):
-                                rg.execute_human_sign_off(sel_report_id, auditor_name, approved=True, expert_notes=audit_notes)
-                                st.success(f"Report {sel_report_id} APPROVED by {auditor_name}!")
-                                st.rerun()
-                        with col_sign2:
-                            if st.button("❌ Reject & Request Revision", width="stretch"):
-                                rg.execute_human_sign_off(sel_report_id, auditor_name, approved=False, expert_notes=audit_notes)
-                                st.warning(f"Report {sel_report_id} REJECTED by {auditor_name}.")
-                                st.rerun()
+                st.markdown("#### 🛡️ Human Compliance Review & Control Verification Cockpit")
+                st.caption("Examine all generated reports, give comments for each mapped control, modify verdicts, and issue certified audits.")
+                
+                col_gw1, col_gw2 = st.columns([3, 1])
+                with col_gw2:
+                    if st.button("🖥️ Open Full-Screen Cockpit", width="stretch", type="primary", key="open_fullscreen_cockpit_btn"):
+                        st.session_state.active_view = "hitl_cockpit"
+                        st.rerun()
+
+                import ui.hitl_verification_panel as ui_hitl
+                importlib.reload(ui_hitl)
+                ui_hitl.render_hitl_audit_reports_view()
+
+                with st.expander("Legacy Sign-Off Archive Queue", expanded=False):
+                    pending_files = glob.glob(os.path.join(rg.HUMAN_SIGN_OFF_DIR, "*.json"))
+                    if not pending_files:
+                        st.info("No legacy reports in sign-off queue.")
+                    else:
+                        p_options = [os.path.basename(f).replace(".json", "") for f in pending_files]
+                        sel_report_id = st.selectbox("Select Report to Audit", options=p_options, key="legacy_sel_report")
+                        if sel_report_id:
+                            with open(os.path.join(rg.HUMAN_SIGN_OFF_DIR, f"{sel_report_id}.json"), "r", encoding="utf-8") as f:
+                                rec = json.load(f)
+                            st.write(f"**Client:** `{rec['client_id']}` | **Status:** `{rec['human_review_status']}`")
+                            st.write(f"**Auto Verdict:** `{rec['auto_verdict']}` | **Submitted At:** `{rec['submitted_at']}`")
+                            auditor_name = st.text_input("Auditor Name / License ID", value="Certifying Auditor CISA-9821", key="leg_aud_name")
+                            audit_notes = st.text_area("Auditor Review Notes", value="Verified control evidence against evidence vault.", key="leg_aud_notes")
+                            
+                            col_sign1, col_sign2 = st.columns(2)
+                            with col_sign1:
+                                if st.button("✅ Approve & Certify Report", width="stretch", key="leg_appr_btn"):
+                                    rg.execute_human_sign_off(sel_report_id, auditor_name, approved=True, expert_notes=audit_notes)
+                                    st.success(f"Report {sel_report_id} APPROVED by {auditor_name}!")
+                                    st.rerun()
+                            with col_sign2:
+                                if st.button("❌ Reject & Request Revision", width="stretch", key="leg_rej_btn"):
+                                    rg.execute_human_sign_off(sel_report_id, auditor_name, approved=False, expert_notes=audit_notes)
+                                    st.warning(f"Report {sel_report_id} REJECTED by {auditor_name}.")
+                                    st.rerun()
 
             with gov_tab2:
                 st.markdown("#### 🧪 Hallucination & Error-Rate Evaluation Benchmark")
