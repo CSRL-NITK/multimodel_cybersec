@@ -1,0 +1,256 @@
+{
+  "scenarios_evaluated": 8,
+  "ungrounded_baseline": {
+    "mean_citation_precision_pct": 100.0,
+    "hallucination_rate_pct": 0.0,
+    "target_control_recall_pct": 4.16,
+    "statutory_concept_recall_pct": 72.91,
+    "mean_latency_ms": 14436.05
+  },
+  "per_framework_grounded": {
+    "mean_citation_precision_pct": 87.5,
+    "hallucination_rate_pct": 12.5,
+    "target_control_recall_pct": 36.45,
+    "statutory_concept_recall_pct": 79.16,
+    "mean_latency_ms": 23178.95,
+    "mean_retrieval_latency_ms": 890.21
+  },
+  "grounded_runs": [
+    {
+      "total_citations_found": 2,
+      "valid_citations": 2,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 33.3,
+      "concept_recall_pct": 75.0,
+      "citations_extracted": [
+        "article 33",
+        "section 2"
+      ],
+      "latency_ms": 28242.37,
+      "retrieval_ms": 6512.88,
+      "framework": "GDPR"
+    },
+    {
+      "total_citations_found": 0,
+      "valid_citations": 0,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 100.0,
+      "citations_extracted": [],
+      "latency_ms": 18120.35,
+      "retrieval_ms": 229.19,
+      "framework": "HIPAA"
+    },
+    {
+      "total_citations_found": 3,
+      "valid_citations": 3,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 66.7,
+      "concept_recall_pct": 100.0,
+      "citations_extracted": [
+        "pr.aa-04",
+        "pr.aa-02",
+        "pr.aa-05"
+      ],
+      "latency_ms": 15722.97,
+      "retrieval_ms": 53.15,
+      "framework": "CSF"
+    },
+    {
+      "total_citations_found": 4,
+      "valid_citations": 4,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 100.0,
+      "concept_recall_pct": 100.0,
+      "citations_extracted": [
+        "a.8.15",
+        "a.5.31",
+        "a.8.16",
+        "a.5.23"
+      ],
+      "latency_ms": 14902.06,
+      "retrieval_ms": 55.99,
+      "framework": "ISO27001"
+    },
+    {
+      "total_citations_found": 0,
+      "valid_citations": 0,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 25.0,
+      "concept_recall_pct": 50.0,
+      "citations_extracted": [],
+      "latency_ms": 26274.79,
+      "retrieval_ms": 63.03,
+      "framework": "DPDP"
+    },
+    {
+      "total_citations_found": 1,
+      "valid_citations": 1,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 33.3,
+      "concept_recall_pct": 50.0,
+      "citations_extracted": [
+        "cc6.2"
+      ],
+      "latency_ms": 8728.25,
+      "retrieval_ms": 59.75,
+      "framework": "SOC2"
+    },
+    {
+      "total_citations_found": 1,
+      "valid_citations": 1,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 83.3,
+      "citations_extracted": [
+        "v11.4.2"
+      ],
+      "latency_ms": 30011.44,
+      "retrieval_ms": 61.81,
+      "framework": "ASVS"
+    },
+    {
+      "total_citations_found": 4,
+      "valid_citations": 0,
+      "hallucinated_citations": 4,
+      "citation_precision_pct": 0.0,
+      "has_hallucination": true,
+      "target_control_recall_pct": 33.3,
+      "concept_recall_pct": 75.0,
+      "citations_extracted": [
+        "article 6(1)",
+        "article 6(9)",
+        "article 28(2)",
+        "article 28(5)"
+      ],
+      "latency_ms": 43429.35,
+      "retrieval_ms": 85.91,
+      "framework": "DORA"
+    }
+  ],
+  "ungrounded_runs": [
+    {
+      "total_citations_found": 1,
+      "valid_citations": 1,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 33.3,
+      "concept_recall_pct": 100.0,
+      "citations_extracted": [
+        "article 34"
+      ],
+      "latency_ms": 14226.21,
+      "framework": "GDPR"
+    },
+    {
+      "total_citations_found": 0,
+      "valid_citations": 0,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 100.0,
+      "citations_extracted": [],
+      "latency_ms": 14696.59,
+      "framework": "HIPAA"
+    },
+    {
+      "total_citations_found": 2,
+      "valid_citations": 2,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 75.0,
+      "citations_extracted": [
+        "section 7",
+        "section 6"
+      ],
+      "latency_ms": 14200.75,
+      "framework": "CSF"
+    },
+    {
+      "total_citations_found": 1,
+      "valid_citations": 1,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 50.0,
+      "citations_extracted": [
+        "a.5.3"
+      ],
+      "latency_ms": 14414.1,
+      "framework": "ISO27001"
+    },
+    {
+      "total_citations_found": 1,
+      "valid_citations": 1,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 50.0,
+      "citations_extracted": [
+        "section 14"
+      ],
+      "latency_ms": 14633.56,
+      "framework": "DPDP"
+    },
+    {
+      "total_citations_found": 0,
+      "valid_citations": 0,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 75.0,
+      "citations_extracted": [],
+      "latency_ms": 14495.27,
+      "framework": "SOC2"
+    },
+    {
+      "total_citations_found": 1,
+      "valid_citations": 1,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 83.3,
+      "citations_extracted": [
+        "v5.0"
+      ],
+      "latency_ms": 14375.08,
+      "framework": "ASVS"
+    },
+    {
+      "total_citations_found": 1,
+      "valid_citations": 1,
+      "hallucinated_citations": 0,
+      "citation_precision_pct": 100.0,
+      "has_hallucination": false,
+      "target_control_recall_pct": 0.0,
+      "concept_recall_pct": 50.0,
+      "citations_extracted": [
+        "article 32"
+      ],
+      "latency_ms": 14446.86,
+      "framework": "DORA"
+    }
+  ]
+}

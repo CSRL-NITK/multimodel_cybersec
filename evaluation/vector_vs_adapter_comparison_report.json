@@ -1,0 +1,90 @@
+{
+  "method": "Per-Framework Isolated Vector DB",
+  "avg_query_latency_ms": 1403.59,
+  "overall_citation_recall_pct": 46.7,
+  "cross_contamination_rate": "0.0%",
+  "hallucination_vulnerability": "Extremely Low (Direct Grounded Verbatim Source)",
+  "re_indexing_update_cost": "0 GPU Training Hours (Instant JSON Ingestion in ~1s)",
+  "scenario_results": [
+    {
+      "scenario": "SCENARIO_1_GDPR_DPIA",
+      "framework": "gdpr",
+      "latency_ms": 6976.32,
+      "retrieved_control_ids": [
+        "Article 35",
+        "36.3.e",
+        "35.3"
+      ],
+      "matched_ground_truth": [
+        "Article 35",
+        "35.3"
+      ],
+      "citation_recall": 66.7,
+      "term_recall": 25.0,
+      "cross_framework_contamination": "0.0% (Zero Leakage)"
+    },
+    {
+      "scenario": "SCENARIO_2_HIPAA_ENCRYPTION",
+      "framework": "hipaa",
+      "latency_ms": 16.08,
+      "retrieved_control_ids": [
+        "164.312(e)(1).143",
+        "164.308(a)(1).8",
+        "164.312(e)(1).145"
+      ],
+      "matched_ground_truth": [],
+      "citation_recall": 0.0,
+      "term_recall": 75.0,
+      "cross_framework_contamination": "0.0% (Zero Leakage)"
+    },
+    {
+      "scenario": "SCENARIO_3_NIST_CSF_GOVERNANCE",
+      "framework": "csf",
+      "latency_ms": 9.1,
+      "retrieved_control_ids": [
+        "GV.OC-01",
+        "GV.OC-02",
+        "GV.OC-03"
+      ],
+      "matched_ground_truth": [
+        "GV.OC-01",
+        "GV.OC-02"
+      ],
+      "citation_recall": 66.7,
+      "term_recall": 50.0,
+      "cross_framework_contamination": "0.0% (Zero Leakage)"
+    },
+    {
+      "scenario": "SCENARIO_4_ISO27001_CLOUD_LOGGING",
+      "framework": "iso27001",
+      "latency_ms": 8.68,
+      "retrieved_control_ids": [
+        "A.5.23",
+        "A.8.15",
+        "A.8.16"
+      ],
+      "matched_ground_truth": [
+        "A.8.15",
+        "A.5.23",
+        "A.8.16"
+      ],
+      "citation_recall": 100.0,
+      "term_recall": 100.0,
+      "cross_framework_contamination": "0.0% (Zero Leakage)"
+    },
+    {
+      "scenario": "SCENARIO_5_INDIA_DPDP_CONSENT",
+      "framework": "dpdp",
+      "latency_ms": 7.76,
+      "retrieved_control_ids": [
+        "6(10)",
+        "8(7)",
+        "5(1)"
+      ],
+      "matched_ground_truth": [],
+      "citation_recall": 0.0,
+      "term_recall": 50.0,
+      "cross_framework_contamination": "0.0% (Zero Leakage)"
+    }
+  ]
+}
